@@ -1,0 +1,124 @@
+"id","localized_name","primary_attr","attack_type","Carry","Disabler","Durable","Escape","Initiator","Jungler","Nuker","Pusher","Support"
+1,"Anti-Mage","agi","Melee",1,0,0,1,0,0,1,0,0
+2,"Axe","str","Melee",1,1,1,0,1,1,0,0,0
+3,"Bane","int","Ranged",0,1,1,0,0,0,1,0,1
+4,"Bloodseeker","agi","Melee",1,1,0,0,1,1,1,0,0
+5,"Crystal Maiden","int","Ranged",0,1,0,0,0,1,1,0,1
+6,"Drow Ranger","agi","Ranged",1,1,0,0,0,0,0,1,0
+7,"Earthshaker","str","Melee",0,1,0,0,1,0,1,0,1
+8,"Juggernaut","agi","Melee",1,0,0,1,0,0,0,1,0
+9,"Mirana","agi","Ranged",1,1,0,1,0,0,1,0,1
+10,"Morphling","agi","Ranged",1,1,1,1,0,0,1,0,0
+11,"Shadow Fiend","agi","Ranged",1,0,0,0,0,0,1,0,0
+12,"Phantom Lancer","agi","Melee",1,0,0,1,0,0,1,1,0
+13,"Puck","int","Ranged",0,1,0,1,1,0,1,0,0
+14,"Pudge","str","Melee",0,1,1,0,1,0,1,0,0
+15,"Razor","agi","Ranged",1,0,1,0,0,0,1,1,0
+16,"Sand King","str","Melee",0,1,0,1,1,1,1,0,1
+17,"Storm Spirit","int","Ranged",1,1,0,1,1,0,1,0,0
+18,"Sven","str","Melee",1,1,1,0,1,0,1,0,0
+19,"Tiny","str","Melee",1,1,1,0,1,0,1,1,0
+20,"Vengeful Spirit","agi","Ranged",0,1,0,1,1,0,1,0,1
+21,"Windranger","int","Ranged",1,1,0,1,0,0,1,0,1
+22,"Zeus","int","Ranged",1,0,0,0,0,0,1,0,0
+23,"Kunkka","str","Melee",1,1,1,0,1,0,1,0,1
+25,"Lina","int","Ranged",1,1,0,0,0,0,1,0,1
+26,"Lion","int","Ranged",0,1,0,0,1,0,1,0,1
+27,"Shadow Shaman","int","Ranged",0,1,0,0,1,0,1,1,1
+28,"Slardar","str","Melee",1,1,1,1,1,0,0,0,0
+29,"Tidehunter","str","Melee",1,1,1,0,1,0,1,0,0
+30,"Witch Doctor","int","Ranged",0,1,0,0,0,0,1,0,1
+31,"Lich","int","Ranged",0,0,0,0,0,0,1,0,1
+32,"Riki","agi","Melee",1,1,0,1,0,0,0,0,0
+33,"Enigma","int","Ranged",0,1,0,0,1,1,0,1,0
+34,"Tinker","int","Ranged",1,0,0,0,0,0,1,1,0
+35,"Sniper","agi","Ranged",1,0,0,0,0,0,1,0,0
+36,"Necrophos","int","Ranged",1,1,1,0,0,0,1,0,0
+37,"Warlock","int","Ranged",0,1,0,0,1,0,0,0,1
+38,"Beastmaster","str","Melee",0,1,1,0,1,0,1,0,0
+39,"Queen of Pain","int","Ranged",1,0,0,1,0,0,1,0,0
+40,"Venomancer","agi","Ranged",0,1,0,0,1,0,1,1,1
+41,"Faceless Void","agi","Melee",1,1,1,1,1,0,0,0,0
+42,"Wraith King","str","Melee",1,1,1,0,1,0,0,0,1
+43,"Death Prophet","int","Ranged",1,1,0,0,0,0,1,1,0
+44,"Phantom Assassin","agi","Melee",1,0,0,1,0,0,0,0,0
+45,"Pugna","int","Ranged",0,0,0,0,0,0,1,1,0
+46,"Templar Assassin","agi","Ranged",1,0,0,1,0,0,0,0,0
+47,"Viper","agi","Ranged",1,1,1,0,1,0,0,0,0
+48,"Luna","agi","Ranged",1,0,0,0,0,0,1,1,0
+49,"Dragon Knight","str","Melee",1,1,1,0,1,0,1,1,0
+50,"Dazzle","int","Ranged",0,1,0,0,0,0,1,0,1
+51,"Clockwerk","str","Melee",0,1,1,0,1,0,1,0,0
+52,"Leshrac","int","Ranged",1,1,0,0,0,0,1,1,1
+53,"Nature's Prophet","int","Ranged",1,0,0,1,0,1,1,1,0
+54,"Lifestealer","str","Melee",1,1,1,1,0,1,0,0,0
+55,"Dark Seer","int","Melee",0,1,0,1,1,1,0,0,0
+56,"Clinkz","agi","Ranged",1,0,0,1,0,0,0,1,0
+57,"Omniknight","str","Melee",0,0,1,0,0,0,1,0,1
+58,"Enchantress","int","Ranged",0,1,1,0,0,1,0,1,1
+59,"Huskar","str","Ranged",1,0,1,0,1,0,0,0,0
+60,"Night Stalker","str","Melee",1,1,1,0,1,0,1,0,0
+61,"Broodmother","agi","Melee",1,0,0,1,0,0,1,1,0
+62,"Bounty Hunter","agi","Melee",0,0,0,1,0,0,1,0,0
+63,"Weaver","agi","Ranged",1,0,0,1,0,0,0,0,0
+64,"Jakiro","int","Ranged",0,1,0,0,0,0,1,1,1
+65,"Batrider","int","Ranged",0,1,0,1,1,1,0,0,0
+66,"Chen","int","Ranged",0,0,0,0,0,1,0,1,1
+67,"Spectre","agi","Melee",1,0,1,1,0,0,0,0,0
+68,"Ancient Apparition","int","Ranged",0,1,0,0,0,0,1,0,1
+69,"Doom","str","Melee",1,1,1,0,1,0,1,0,0
+70,"Ursa","agi","Melee",1,1,1,0,0,1,0,0,0
+71,"Spirit Breaker","str","Melee",1,1,1,1,1,0,0,0,0
+72,"Gyrocopter","agi","Ranged",1,1,0,0,0,0,1,0,0
+73,"Alchemist","str","Melee",1,1,1,0,1,0,1,0,1
+74,"Invoker","int","Ranged",1,1,0,1,0,0,1,1,0
+75,"Silencer","int","Ranged",1,1,0,0,1,0,1,0,1
+76,"Outworld Destroyer","int","Ranged",1,1,0,0,0,0,1,0,0
+77,"Lycan","str","Melee",1,0,1,1,0,1,0,1,0
+78,"Brewmaster","str","Melee",1,1,1,0,1,0,1,0,0
+79,"Shadow Demon","int","Ranged",0,1,0,0,1,0,1,0,1
+80,"Lone Druid","agi","Ranged",1,0,1,0,0,1,0,1,0
+81,"Chaos Knight","str","Melee",1,1,1,0,1,0,0,1,0
+82,"Meepo","agi","Melee",1,1,0,1,1,0,1,1,0
+83,"Treant Protector","str","Melee",0,1,1,1,1,0,0,0,1
+84,"Ogre Magi","int","Melee",0,1,1,0,1,0,1,0,1
+85,"Undying","str","Melee",0,1,1,0,0,0,1,0,1
+86,"Rubick","int","Ranged",0,1,0,0,0,0,1,0,1
+87,"Disruptor","int","Ranged",0,1,0,0,1,0,1,0,1
+88,"Nyx Assassin","agi","Melee",0,1,0,1,1,0,1,0,0
+89,"Naga Siren","agi","Melee",1,1,0,1,1,0,0,1,1
+90,"Keeper of the Light","int","Ranged",0,1,0,0,0,1,1,0,1
+91,"Io","str","Ranged",0,0,0,1,0,0,1,0,1
+92,"Visage","int","Ranged",0,1,1,0,0,0,1,1,1
+93,"Slark","agi","Melee",1,1,0,1,0,0,1,0,0
+94,"Medusa","agi","Ranged",1,1,1,0,0,0,0,0,0
+95,"Troll Warlord","agi","Ranged",1,1,1,0,0,0,0,1,0
+96,"Centaur Warrunner","str","Melee",0,1,1,1,1,0,1,0,0
+97,"Magnus","str","Melee",0,1,0,1,1,0,1,0,0
+98,"Timbersaw","str","Melee",0,0,1,1,0,0,1,0,0
+99,"Bristleback","str","Melee",1,0,1,0,1,0,1,0,0
+100,"Tusk","str","Melee",0,1,0,0,1,0,1,0,0
+101,"Skywrath Mage","int","Ranged",0,1,0,0,0,0,1,0,1
+102,"Abaddon","str","Melee",1,0,1,0,0,0,0,0,1
+103,"Elder Titan","str","Melee",0,1,1,0,1,0,1,0,0
+104,"Legion Commander","str","Melee",1,1,1,0,1,0,1,0,0
+105,"Techies","int","Ranged",0,1,0,0,0,0,1,0,0
+106,"Ember Spirit","agi","Melee",1,1,0,1,1,0,1,0,0
+107,"Earth Spirit","str","Melee",0,1,1,1,1,0,1,0,0
+108,"Underlord","str","Melee",0,1,1,1,0,0,1,0,1
+109,"Terrorblade","agi","Melee",1,0,0,0,0,0,1,1,0
+110,"Phoenix","str","Ranged",0,1,0,1,1,0,1,0,1
+111,"Oracle","int","Ranged",0,1,0,1,0,0,1,0,1
+112,"Winter Wyvern","int","Ranged",0,1,0,0,0,0,1,0,1
+113,"Arc Warden","agi","Ranged",1,0,0,1,0,0,1,0,0
+114,"Monkey King","agi","Melee",1,1,0,1,1,0,0,0,0
+119,"Dark Willow","int","Ranged",0,1,0,1,0,0,1,0,1
+120,"Pangolier","agi","Melee",1,1,1,1,1,0,1,0,0
+121,"Grimstroke","int","Ranged",0,1,0,1,0,0,1,0,1
+123,"Hoodwink","agi","Ranged",0,1,0,1,0,0,1,0,1
+126,"Void Spirit","int","Melee",1,1,0,1,0,0,1,0,0
+128,"Snapfire","str","Ranged",0,1,0,1,0,0,1,0,1
+129,"Mars","str","Melee",1,1,1,0,1,0,0,0,0
+135,"Dawnbreaker","str","Melee",1,0,1,0,0,0,0,0,0
+136,"Marci","str","Melee",1,1,0,1,1,0,0,0,1
+137,"Primal Beast","str","Melee",0,1,1,0,1,0,0,0,0
