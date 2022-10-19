@@ -49,21 +49,21 @@ homeBody <- tabItem(
       color = "black",
       valueBoxOutput("bossWinRateBox"),
       valueBoxOutput("bossKLABox")
-    ),
-    box(
-      title = "Test",
-      color = "black",
-      box(
-        title = "Win Rate",
-        color = "orange",
-        valueBoxOutput("mhWinRateBox")
-      ),
-      box(
-        title = "KLA",
-        color = "orange",
-        valueBoxOutput("mhKLABox")
-      )
     )
+    # box(
+    #   title = "Test",
+    #   color = "black",
+    #   box(
+    #     title = "Win Rate",
+    #     color = "orange",
+    #     valueBoxOutput("mhWinRateBox")
+    #   ),
+    #   box(
+    #     title = "KLA",
+    #     color = "orange",
+    #     valueBoxOutput("mhKLABox")
+    #   )
+    # )
 
   ),
   
