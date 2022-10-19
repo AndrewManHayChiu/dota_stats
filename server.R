@@ -1,80 +1,40 @@
 function(input, output, session) {
   
-  # RECENT MATCH DATA
-  mhRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 208812212, limit = 400)
-  })
-  
-  bottleRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 1075592541, limit = 400)
-  })
-  
-  shiriRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 156306162, limit = 400)
-  })
-  
-  baconRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 1075655293, limit = 400)
-  })
-  
-  catRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 103619307, limit = 400)
-  })
-  
-  moreRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 1079351025, limit = 400)
-  })
-  
-  bossRecentMatchData <- reactive({
-    get_recent_matches_data(player_id = 100501459, limit = 400)
-  })
-  
-  # COMBINED RECENT MATCH DATA
-  combinedRecentMatchData <- reactive({
-    mhRecentMatchData() %>%
-      bind_rows(bottleRecentMatchData()) %>%
-      bind_rows(shiriRecentMatchData()) %>%
-      bind_rows(baconRecentMatchData()) %>%
-      bind_rows(catRecentMatchData()) %>%
-      bind_rows(moreRecentMatchData()) %>%
-      bind_rows(bossRecentMatchData()) %>%
-      left_join(players_df) %>%
-      left_join(heroes %>% select(hero_id = id, localized_name))
-  })
+  output$averageOverSlider <- renderPrint({ input$averageOverSlider })
   
   # RECENT MATCH DATA REACTIVE
   mhRecentMatchDataReactive <- reactive({
-    mhRecentMatchData() %>%
+    mhRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   bottleRecentMatchDataReactive <- reactive({
-    bottleRecentMatchData() %>%
+    bottleRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   shiriRecentMatchDataReactive <- reactive({
-    shiriRecentMatchData() %>%
+    shiriRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   baconRecentMatchDataReactive <- reactive({
-    baconRecentMatchData() %>%
+    baconRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   catRecentMatchDataReactive <- reactive({
-    catRecentMatchData() %>%
+    catRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   moreRecentMatchDataReactive <- reactive({
-    moreRecentMatchData() %>%
+    moreRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   bossRecentMatchDataReactive <- reactive({
-    bossRecentMatchData() %>%
+    bossRecentMatchData %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
@@ -109,7 +69,7 @@ function(input, output, session) {
   
   # KLA RATIOS
   mhKLA <- reactive({
-    calc_kla_ratio(mhRecentMatchDataReactive())
+    calc_kla_ratio(mhRecentMatchDataReactive() %>% top_n(input$averageOverSlider))
   })
   
   bottleKLA <- reactive({
@@ -135,19 +95,7 @@ function(input, output, session) {
   bossKLA <- reactive({
     calc_kla_ratio(bossRecentMatchDataReactive())
   })
-  
-  # PLAYER DATA
-  # mhPlayerData <- reactive({
-  #   get_player_data(player_id = 208812212)
-  # })
-  # 
-  # bottlePlayerData <- reactive({
-  #   get_player_data(player_id = 1075592541)
-  # })
-  # 
-  # shiriPlayerData <- reactive({
-  #   get_player_data(player_id = 156306162)
-  # })
+
   
   # WIN RATE BOXES
   output$mhWinRateBox <- renderValueBox({
@@ -264,9 +212,7 @@ function(input, output, session) {
       bind_rows(catRecentMatchDataReactive()) %>%
       bind_rows(baconRecentMatchDataReactive()) %>%
       bind_rows(bossRecentMatchDataReactive()) %>%
-      # bind_rows(moRecentMatchDataReactive()) %>%
       bind_rows(moreRecentMatchDataReactive()) %>%
-      left_join(players_df) %>%
       group_by(player_name) %>%
       summarise(kla = (sum(kills) + sum(assists)) / (sum(deaths) + 1),
                 wr = sum(win) / length(win)) %>%
@@ -291,13 +237,7 @@ function(input, output, session) {
   # WINRATE TIME SERIES PLOT
   
   output$winRateTimeSeriesPlot <- renderPlot({
-    # temp <- combinedRecentMatchData() %>%
-    #   group_by(player_id) %>%
-    #   arrange(desc(match_id)) %>%
-    #   mutate(roll = zoo::rollmean(win, k = 35, fill = NA),
-    #          date = as.POSIXct(start_time, tz = "UTC", origin = "1970-01-01")) %>%
-    #   filter(!is.na(roll))
-    
+
     ggplot() +
       geom_rect(
         data = patch_dates,
@@ -310,7 +250,7 @@ function(input, output, session) {
         show.legend = FALSE
       ) +
     geom_line(
-      data = combinedRecentMatchData(),
+      data = combinedRecentMatchData,
       aes(x = date, y = roll, group = player_name, colour = player_name),
       size = 1
     ) +
@@ -356,9 +296,9 @@ function(input, output, session) {
   # DATA OUTPUT
   data_output <- reactive({
     if (input$data_radioGroup == 208812212) {
-      mhRecentMatchData()
+      mhRecentMatchData
     } else if (input$data_radioGroup == 1075592541) {
-      bottleRecentMatchData()
+      bottleRecentMatchData
     }
   })
   
