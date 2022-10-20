@@ -2,10 +2,6 @@ homeBody <- tabItem(
   tabName = "home",
   h2("Overview"),
   
-  # fluidRow(
-  #   verbatimTextOutput("averageOverSlider")
-  # ),
-  
   h3("Win Rate"),
   fluidRow(
     box(
@@ -64,7 +60,6 @@ homeBody <- tabItem(
     #     valueBoxOutput("mhKLABox")
     #   )
     # )
-
   ),
   
   fluidRow(
@@ -83,10 +78,4 @@ homeBody <- tabItem(
       plotOutput("winRateTimeSeriesPlot")
     )
   )
-  
-  # h3("Two Stacks"),
-  # fluidRow(),
-  # 
-  # h3("Three Stacks"),
-  # fluidRow()
 )
