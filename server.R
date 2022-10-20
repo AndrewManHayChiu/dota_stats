@@ -206,6 +206,7 @@ function(input, output, session) {
   
   # KLA vs WIN RATE SCATTER PLOT
   output$klaWinRateScatterPlot <- renderPlot({
+    
     mhRecentMatchDataReactive() %>%
       bind_rows(bottleRecentMatchDataReactive()) %>%
       bind_rows(shiriRecentMatchDataReactive()) %>%
@@ -267,8 +268,8 @@ function(input, output, session) {
       labels = scales::percent
     ) +
     scale_x_continuous(
-      limits = as.POSIXct(c("2020-07-01", as.character(Sys.Date()))),
-      breaks = as.POSIXct(c("2020-07-01", "2021-01-01", "2021-07-01", "2022-01-01", "2022-07-01"))
+      limits = as.POSIXct(c(as.character(Sys.Date() - 100), as.character(Sys.Date()))),
+      # breaks = as.POSIXct(c("2020-07-01", "2021-01-01", "2021-07-01", "2022-01-01", "2022-07-01"))
     ) +
     theme_bw() +
     theme(

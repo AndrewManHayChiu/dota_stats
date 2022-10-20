@@ -51,18 +51,6 @@ heroes <- read.csv('data/heroes.csv')
 
 valBoxWidth <- 3
 
-get_win_rate <- function(id, api_key = api_key, matches) {
-  url <- paste0("https://api.opendota.com/api/players/", id, 
-                "/wl",
-                "?api_key=", api_key,
-                "&limit=", matches)
-  res <- GET(url)
-  wl_data <- fromJSON(rawToChar(res$content))
-  wl_data$win / (wl_data$win + wl_data$lose)
-}
-
-# get_win_rate(id = "208812212", api_key = api_key, matches = "20")
-
 value_box_colour <- function(value) {
   if (value < .4) {
     "red"
@@ -118,12 +106,10 @@ get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lo
   recent_matches_data$player_id <- player_id
   recent_matches_data$team <- ifelse(recent_matches_data$player_slot <= 127, 'Radiant', 'Dire')
   
-  recent_matches_data <- recent_matches_data %>%
+  recent_matches_data %>%
     rowwise() %>%
     mutate(win = win(team, radiant_win)) %>%
-    ungroup()
-  
-  recent_matches_data %>%
+    ungroup() %>%
     left_join(players_df, by = "player_id") %>%
     left_join(heroes, by = c("hero_id" = "id")) %>%
     arrange(desc(match_id)) %>%
@@ -172,6 +158,6 @@ moreWinRateAllTime <- sum(moreRecentMatchData$win) / length(moreRecentMatchData$
 bossWinRateAllTime <- sum(bossRecentMatchData$win) / length(bossRecentMatchData$win)
 
 # heroes played
-mhRecentMatchData %>%
-  count(localized_name) %>%
-  arrange(desc(n))
+# mhRecentMatchData %>%
+#   count(localized_name) %>%
+#   arrange(desc(n))
