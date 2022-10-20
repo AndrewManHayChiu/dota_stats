@@ -34,14 +34,14 @@ patch_dates <- data.frame(
 )
 
 players <- list(
-  "MH" = 208812212,
+  "MH"     = 208812212,
   "Bottle" = 1075592541,
-  "Shiri" = 156306162,
-  "Cat" = 103619307,
-  "Bacon" = 1075655293,
-  "Mo" = 152471066,
-  "More" = 1079351025,
-  "Boss" = 100501459
+  "Shiri"  = 156306162,
+  "Cat"    = 103619307,
+  "Bacon"  = 1075655293,
+  "Mo"     = 152471066,
+  "More"   = 1079351025,
+  "Boss"   = 100501459
 )
 
 players_df <- data.frame(
@@ -65,8 +65,6 @@ value_box_colour <- function(value) {
   }
 }
 
-# value_box_colour(0.3)
-
 get_player_data <- function(player_id, api_key) {
   url <- paste0("https://api.opendota.com/api/players/", player_id, 
                 "/?api_key=", api_key)
@@ -75,8 +73,7 @@ get_player_data <- function(player_id, api_key) {
   player_data
 }
 
-# player_data <- get_player_data(player_id = 208812212, api_key = api_key)
-# player_data
+# get_player_data(player_id = 208812212, api_key = api_key)
 
 win <- function(team, radiant_win) {
   if (team == "Radiant" & radiant_win == TRUE) {
@@ -87,12 +84,6 @@ win <- function(team, radiant_win) {
     FALSE
   }
 }
-
-# win(team = "Radiant", radiant_win = TRUE)
-# win(team = "Radiant", radiant_win = FALSE)
-# win(team = "Dire", radiant_win = TRUE)
-# win(team = "Dire", radiant_win = FALSE)
-
 
 get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lobby_type = 7, game_mode = 1) {
   url <- paste0("https://api.opendota.com/api/players/", player_id, 
@@ -122,28 +113,6 @@ get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lo
 # recent_match_data <- get_recent_matches_data(player_id = 208812212, limit = 100)
 # recent_match_data
 
-# mhRecentMatchData     <- get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 400)
-# bottleRecentMatchData <- get_recent_matches_data(player_id = 1075592541, api_key = api_key, limit = 400)
-# shiriRecentMatchData  <- get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 400)
-# baconRecentMatchData  <- get_recent_matches_data(player_id = 1075655293, api_key = api_key, limit = 400)
-# catRecentMatchData    <- get_recent_matches_data(player_id = 103619307, api_key = api_key, limit = 400)
-# moreRecentMatchData   <- get_recent_matches_data(player_id = 1079351025, api_key = api_key, limit = 400)
-# bossRecentMatchData   <- get_recent_matches_data(player_id = 100501459, api_key = api_key, limit = 400)
-
-# COMBINED RECENT MATCH DATA
-# combinedRecentMatchData <- mhRecentMatchData %>%
-#     bind_rows(bottleRecentMatchData) %>%
-#     bind_rows(shiriRecentMatchData) %>%
-#     bind_rows(baconRecentMatchData) %>%
-#     bind_rows(catRecentMatchData) %>%
-#     bind_rows(moreRecentMatchData) %>%
-#     bind_rows(bossRecentMatchData) %>%
-#     left_join(
-#       heroes %>% 
-#         select(hero_id = id, localized_name), 
-#       by = "hero_id")
-
-
 calc_kla_ratio <- function(recent_match_data) {
   kills_assists <- (sum(recent_match_data$kills) + sum(recent_match_data$assists))
   lives <- (sum(recent_match_data$deaths) + 1)
@@ -151,15 +120,34 @@ calc_kla_ratio <- function(recent_match_data) {
   kills_assists / lives
 }
 
-# mhWinRateAllTime <- sum(mhRecentMatchData$win) / length(mhRecentMatchData$win)
-# bottleWinRateAllTime <- sum(bottleRecentMatchData$win) / length(bottleRecentMatchData$win)
-# shiriWinRateAllTime <- sum(shiriRecentMatchData$win) / length(shiriRecentMatchData$win)
-# baconWinRateAllTime <- sum(baconRecentMatchData$win) / length(baconRecentMatchData$win)
-# catWinRateAllTime <- sum(catRecentMatchData$win) / length(catRecentMatchData$win)
-# moreWinRateAllTime <- sum(moreRecentMatchData$win) / length(moreRecentMatchData$win)
-# bossWinRateAllTime <- sum(bossRecentMatchData$win) / length(bossRecentMatchData$win)
 
-# heroes played
-# mhRecentMatchData %>%
-#   count(localized_name) %>%
-#   arrange(desc(n))
+# Generate static data ----------------------------------------------------
+
+mhRecentMatchData     <- get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 400)
+bottleRecentMatchData <- get_recent_matches_data(player_id = 1075592541, api_key = api_key, limit = 400)
+shiriRecentMatchData  <- get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 400)
+baconRecentMatchData  <- get_recent_matches_data(player_id = 1075655293, api_key = api_key, limit = 400)
+catRecentMatchData    <- get_recent_matches_data(player_id = 103619307, api_key = api_key, limit = 400)
+moreRecentMatchData   <- get_recent_matches_data(player_id = 1079351025, api_key = api_key, limit = 400)
+bossRecentMatchData   <- get_recent_matches_data(player_id = 100501459, api_key = api_key, limit = 400)
+
+# COMBINED RECENT MATCH DATA
+combinedRecentMatchData <- mhRecentMatchData %>%
+  bind_rows(bottleRecentMatchData) %>%
+  bind_rows(shiriRecentMatchData) %>%
+  bind_rows(baconRecentMatchData) %>%
+  bind_rows(catRecentMatchData) %>%
+  bind_rows(moreRecentMatchData) %>%
+  bind_rows(bossRecentMatchData) %>%
+  left_join(
+    heroes %>%
+      select(hero_id = id, localized_name),
+    by = "hero_id")
+
+mhWinRateAllTime     <- sum(mhRecentMatchData$win) / length(mhRecentMatchData$win)
+bottleWinRateAllTime <- sum(bottleRecentMatchData$win) / length(bottleRecentMatchData$win)
+shiriWinRateAllTime  <- sum(shiriRecentMatchData$win) / length(shiriRecentMatchData$win)
+baconWinRateAllTime  <- sum(baconRecentMatchData$win) / length(baconRecentMatchData$win)
+catWinRateAllTime    <- sum(catRecentMatchData$win) / length(catRecentMatchData$win)
+moreWinRateAllTime   <- sum(moreRecentMatchData$win) / length(moreRecentMatchData$win)
+bossWinRateAllTime   <- sum(bossRecentMatchData$win) / length(bossRecentMatchData$win)

@@ -1,62 +1,32 @@
 function(input, output, session) {
   
-  mhRecentMatchData     <- reactive({ get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 400) })
-  bottleRecentMatchData <- reactive({ get_recent_matches_data(player_id = 1075592541, api_key = api_key, limit = 400) })
-  shiriRecentMatchData  <- reactive({ get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 400) })
-  baconRecentMatchData  <- reactive({ get_recent_matches_data(player_id = 1075655293, api_key = api_key, limit = 400) })
-  catRecentMatchData    <- reactive({ get_recent_matches_data(player_id = 103619307, api_key = api_key, limit = 400) })
-  moreRecentMatchData   <- reactive({ get_recent_matches_data(player_id = 1079351025, api_key = api_key, limit = 400) })
-  bossRecentMatchData   <- reactive({ get_recent_matches_data(player_id = 100501459, api_key = api_key, limit = 400) })
-
-  # COMBINED RECENT MATCH DATA
-  combinedRecentMatchData <- reactive ({
-    mhRecentMatchData() %>%
-      bind_rows(bottleRecentMatchData()) %>%
-      bind_rows(shiriRecentMatchData()) %>%
-      bind_rows(baconRecentMatchData()) %>%
-      bind_rows(catRecentMatchData()) %>%
-      bind_rows(moreRecentMatchData()) %>%
-      bind_rows(bossRecentMatchData()) %>%
-      left_join(
-        heroes %>%
-          select(hero_id = id, localized_name),
-        by = "hero_id")
-  })
-  
   # RECENT MATCH DATA REACTIVE
   mhRecentMatchDataReactive <- reactive({
-    mhRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    mhRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
   
   bottleRecentMatchDataReactive <- reactive({
-    bottleRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    bottleRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
-  
+
   shiriRecentMatchDataReactive <- reactive({
-    shiriRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    shiriRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
-  
+
   baconRecentMatchDataReactive <- reactive({
-    baconRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    baconRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
-  
+
   catRecentMatchDataReactive <- reactive({
-    catRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    catRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
-  
+
   moreRecentMatchDataReactive <- reactive({
-    moreRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    moreRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
-  
+
   bossRecentMatchDataReactive <- reactive({
-    bossRecentMatchData() %>%
-      top_n(input$averageOverSlider, wt = match_id)
+    bossRecentMatchData %>% top_n(input$averageOverSlider, wt = match_id)
   })
   
   # WIN RATES
@@ -67,23 +37,23 @@ function(input, output, session) {
   bottleWinRate <- reactive({
     sum(bottleRecentMatchDataReactive()$win) / length(bottleRecentMatchDataReactive()$win)
   })
-  
+
   shiriWinRate <- reactive({
     sum(shiriRecentMatchDataReactive()$win) / length(shiriRecentMatchDataReactive()$win)
   })
-  
+
   baconWinRate <- reactive({
     sum(baconRecentMatchDataReactive()$win) / length(baconRecentMatchDataReactive()$win)
   })
-  
+
   catWinRate <- reactive({
     sum(catRecentMatchDataReactive()$win) / length(catRecentMatchDataReactive()$win)
   })
-  
+
   moreWinRate <- reactive({
     sum(moreRecentMatchDataReactive()$win) / length(moreRecentMatchDataReactive()$win)
   })
-  
+
   bossWinRate <- reactive({
     sum(bossRecentMatchDataReactive()$win) / length(bossRecentMatchDataReactive()$win)
   })
@@ -96,23 +66,23 @@ function(input, output, session) {
   bottleKLA <- reactive({
     calc_kla_ratio(bottleRecentMatchDataReactive())
   })
-  
+
   shiriKLA <- reactive({
     calc_kla_ratio(shiriRecentMatchDataReactive())
   })
-  
+
   baconKLA <- reactive({
     calc_kla_ratio(baconRecentMatchDataReactive())
   })
-  
+
   catKLA <- reactive({
     calc_kla_ratio(catRecentMatchDataReactive())
   })
-  
+
   moreKLA <- reactive({
     calc_kla_ratio(moreRecentMatchDataReactive())
   })
-  
+
   bossKLA <- reactive({
     calc_kla_ratio(bossRecentMatchDataReactive())
   })
@@ -129,47 +99,47 @@ function(input, output, session) {
   
   output$bottleWinRateBox <- renderValueBox({
     valueBox(
-      scales::percent(round(bottleWinRate(), 2)), 
+      scales::percent(round(bottleWinRate(), 2)),
       "Win Rate", color = value_box_colour(bottleWinRate())
     )
   })
-  
+
   output$shiriWinRateBox <- renderValueBox({
     valueBox(
-      scales::percent(round(shiriWinRate(), 2)), 
-      "Win Rate", 
+      scales::percent(round(shiriWinRate(), 2)),
+      "Win Rate",
       color = value_box_colour(shiriWinRate())
     )
   })
-  
+
   output$catWinRateBox <- renderValueBox({
     valueBox(
-      scales::percent(round(catWinRate(), 2)), 
-      "Win Rate", 
+      scales::percent(round(catWinRate(), 2)),
+      "Win Rate",
       color = value_box_colour(catWinRate())
     )
   })
-  
+
   output$baconWinRateBox <- renderValueBox({
     valueBox(
-      scales::percent(round(baconWinRate(), 2)), 
-      "Win Rate", 
+      scales::percent(round(baconWinRate(), 2)),
+      "Win Rate",
       color = value_box_colour(baconWinRate())
     )
   })
-  
+
   output$moreWinRateBox <- renderValueBox({
     valueBox(
-      scales::percent(round(moreWinRate(), 2)), 
-      "Win Rate", 
+      scales::percent(round(moreWinRate(), 2)),
+      "Win Rate",
       color = value_box_colour(moreWinRate())
     )
   })
-  
+
   output$bossWinRateBox <- renderValueBox({
     valueBox(
-      scales::percent(round(bossWinRate(), 2)), 
-      "Win Rate", 
+      scales::percent(round(bossWinRate(), 2)),
+      "Win Rate",
       color = value_box_colour(bossWinRate())
     )
   })
@@ -185,42 +155,42 @@ function(input, output, session) {
   
   output$bottleKLABox <- renderValueBox({
     valueBox(
-      round(bottleKLA(), 2), 
+      round(bottleKLA(), 2),
       "KLA"
     )
   })
-  
+
   output$shiriKLABox <- renderValueBox({
     valueBox(
-      round(shiriKLA(), 2), 
+      round(shiriKLA(), 2),
       "KLA"
     )
   })
-  
+
   output$baconKLABox <- renderValueBox({
     valueBox(
-      round(baconKLA(), 2), 
+      round(baconKLA(), 2),
       "KLA"
     )
   })
-  
+
   output$catKLABox <- renderValueBox({
     valueBox(
-      round(catKLA(), 2), 
+      round(catKLA(), 2),
       "KLA"
     )
   })
-  
+
   output$moreKLABox <- renderValueBox({
     valueBox(
-      round(moreKLA(), 2), 
+      round(moreKLA(), 2),
       "KLA"
     )
   })
-  
+
   output$bossKLABox <- renderValueBox({
     valueBox(
-      round(bossKLA(), 2), 
+      round(bossKLA(), 2),
       "KLA"
     )
   })
@@ -272,7 +242,7 @@ function(input, output, session) {
         show.legend = FALSE
       ) +
     geom_line(
-      data = combinedRecentMatchData(),
+      data = combinedRecentMatchData,
       aes(x = date, y = roll, group = player_name, colour = player_name),
       size = 1
     ) +
@@ -318,19 +288,19 @@ function(input, output, session) {
   # DATA OUTPUT
   data_output <- reactive({
     if (input$data_radioGroup == 208812212) {
-      mhRecentMatchData()
+      mhRecentMatchData
     } else if (input$data_radioGroup == 1075592541) {
-      bottleRecentMatchData()
+      bottleRecentMatchData
     } else if (input$data_radioGroup == 156306162) {
-      shiriRecentMatchData()
+      shiriRecentMatchData
     } else if (input$data_radioGroup == 1075655293) {
-      baconRecentMatchData()
+      baconRecentMatchData
     } else if (input$data_radioGroup == 103619307) {
-      catRecentMatchData()
+      catRecentMatchData
     } else if (input$data_radioGroup == 1079351025) {
-      moreRecentMatchData()
+      moreRecentMatchData
     } else if (input$data_radioGroup == 100501459) {
-      bossRecentMatchData()
+      bossRecentMatchData
     }
   })
   
