@@ -13,6 +13,8 @@ library(DT)
 fileName <- 'secret/api_key.txt'
 api_key <- readChar(fileName, file.info(fileName)$size)
 
+rm(fileName)
+
 patches <- c(7.25, 7.26, 7.27, 7.28, 7.29, 7.30, 7.31, 7.32)
 
 patch_dates <- data.frame(
@@ -120,26 +122,26 @@ get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lo
 # recent_match_data <- get_recent_matches_data(player_id = 208812212, limit = 100)
 # recent_match_data
 
-mhRecentMatchData     <- get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 400)
-bottleRecentMatchData <- get_recent_matches_data(player_id = 1075592541, api_key = api_key, limit = 400)
-shiriRecentMatchData  <- get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 400)
-baconRecentMatchData  <- get_recent_matches_data(player_id = 1075655293, api_key = api_key, limit = 400)
-catRecentMatchData    <- get_recent_matches_data(player_id = 103619307, api_key = api_key, limit = 400)
-moreRecentMatchData   <- get_recent_matches_data(player_id = 1079351025, api_key = api_key, limit = 400)
-bossRecentMatchData   <- get_recent_matches_data(player_id = 100501459, api_key = api_key, limit = 400)
+# mhRecentMatchData     <- get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 400)
+# bottleRecentMatchData <- get_recent_matches_data(player_id = 1075592541, api_key = api_key, limit = 400)
+# shiriRecentMatchData  <- get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 400)
+# baconRecentMatchData  <- get_recent_matches_data(player_id = 1075655293, api_key = api_key, limit = 400)
+# catRecentMatchData    <- get_recent_matches_data(player_id = 103619307, api_key = api_key, limit = 400)
+# moreRecentMatchData   <- get_recent_matches_data(player_id = 1079351025, api_key = api_key, limit = 400)
+# bossRecentMatchData   <- get_recent_matches_data(player_id = 100501459, api_key = api_key, limit = 400)
 
 # COMBINED RECENT MATCH DATA
-combinedRecentMatchData <- mhRecentMatchData %>%
-    bind_rows(bottleRecentMatchData) %>%
-    bind_rows(shiriRecentMatchData) %>%
-    bind_rows(baconRecentMatchData) %>%
-    bind_rows(catRecentMatchData) %>%
-    bind_rows(moreRecentMatchData) %>%
-    bind_rows(bossRecentMatchData) %>%
-    left_join(
-      heroes %>% 
-        select(hero_id = id, localized_name), 
-      by = "hero_id")
+# combinedRecentMatchData <- mhRecentMatchData %>%
+#     bind_rows(bottleRecentMatchData) %>%
+#     bind_rows(shiriRecentMatchData) %>%
+#     bind_rows(baconRecentMatchData) %>%
+#     bind_rows(catRecentMatchData) %>%
+#     bind_rows(moreRecentMatchData) %>%
+#     bind_rows(bossRecentMatchData) %>%
+#     left_join(
+#       heroes %>% 
+#         select(hero_id = id, localized_name), 
+#       by = "hero_id")
 
 
 calc_kla_ratio <- function(recent_match_data) {
@@ -149,13 +151,13 @@ calc_kla_ratio <- function(recent_match_data) {
   kills_assists / lives
 }
 
-mhWinRateAllTime <- sum(mhRecentMatchData$win) / length(mhRecentMatchData$win)
-bottleWinRateAllTime <- sum(bottleRecentMatchData$win) / length(bottleRecentMatchData$win)
-shiriWinRateAllTime <- sum(shiriRecentMatchData$win) / length(shiriRecentMatchData$win)
-baconWinRateAllTime <- sum(baconRecentMatchData$win) / length(baconRecentMatchData$win)
-catWinRateAllTime <- sum(catRecentMatchData$win) / length(catRecentMatchData$win)
-moreWinRateAllTime <- sum(moreRecentMatchData$win) / length(moreRecentMatchData$win)
-bossWinRateAllTime <- sum(bossRecentMatchData$win) / length(bossRecentMatchData$win)
+# mhWinRateAllTime <- sum(mhRecentMatchData$win) / length(mhRecentMatchData$win)
+# bottleWinRateAllTime <- sum(bottleRecentMatchData$win) / length(bottleRecentMatchData$win)
+# shiriWinRateAllTime <- sum(shiriRecentMatchData$win) / length(shiriRecentMatchData$win)
+# baconWinRateAllTime <- sum(baconRecentMatchData$win) / length(baconRecentMatchData$win)
+# catWinRateAllTime <- sum(catRecentMatchData$win) / length(catRecentMatchData$win)
+# moreWinRateAllTime <- sum(moreRecentMatchData$win) / length(moreRecentMatchData$win)
+# bossWinRateAllTime <- sum(bossRecentMatchData$win) / length(bossRecentMatchData$win)
 
 # heroes played
 # mhRecentMatchData %>%

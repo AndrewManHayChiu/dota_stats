@@ -1,0 +1,14 @@
+name: dota_stats
+title: dota_stats
+username:
+account: chiumanhay
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7351737
+bundleId: 6421975
+url: https://chiumanhay.shinyapps.io/dota_stats/
+when: 1666248714.45163
+lastSyncTime: 1666248714.45163
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: secret/api_key.txt|temp/get_data.R

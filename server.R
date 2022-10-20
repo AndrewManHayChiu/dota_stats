@@ -1,40 +1,61 @@
 function(input, output, session) {
   
-  output$averageOverSlider <- renderPrint({ input$averageOverSlider })
+  mhRecentMatchData     <- reactive({ get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 400) })
+  bottleRecentMatchData <- reactive({ get_recent_matches_data(player_id = 1075592541, api_key = api_key, limit = 400) })
+  shiriRecentMatchData  <- reactive({ get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 400) })
+  baconRecentMatchData  <- reactive({ get_recent_matches_data(player_id = 1075655293, api_key = api_key, limit = 400) })
+  catRecentMatchData    <- reactive({ get_recent_matches_data(player_id = 103619307, api_key = api_key, limit = 400) })
+  moreRecentMatchData   <- reactive({ get_recent_matches_data(player_id = 1079351025, api_key = api_key, limit = 400) })
+  bossRecentMatchData   <- reactive({ get_recent_matches_data(player_id = 100501459, api_key = api_key, limit = 400) })
+
+  # COMBINED RECENT MATCH DATA
+  combinedRecentMatchData <- reactive ({
+    mhRecentMatchData() %>%
+      bind_rows(bottleRecentMatchData()) %>%
+      bind_rows(shiriRecentMatchData()) %>%
+      bind_rows(baconRecentMatchData()) %>%
+      bind_rows(catRecentMatchData()) %>%
+      bind_rows(moreRecentMatchData()) %>%
+      bind_rows(bossRecentMatchData()) %>%
+      left_join(
+        heroes %>%
+          select(hero_id = id, localized_name),
+        by = "hero_id")
+  })
   
   # RECENT MATCH DATA REACTIVE
   mhRecentMatchDataReactive <- reactive({
-    mhRecentMatchData %>%
+    mhRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   bottleRecentMatchDataReactive <- reactive({
-    bottleRecentMatchData %>%
+    bottleRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   shiriRecentMatchDataReactive <- reactive({
-    shiriRecentMatchData %>%
+    shiriRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   baconRecentMatchDataReactive <- reactive({
-    baconRecentMatchData %>%
+    baconRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   catRecentMatchDataReactive <- reactive({
-    catRecentMatchData %>%
+    catRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   moreRecentMatchDataReactive <- reactive({
-    moreRecentMatchData %>%
+    moreRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
   bossRecentMatchDataReactive <- reactive({
-    bossRecentMatchData %>%
+    bossRecentMatchData() %>%
       top_n(input$averageOverSlider, wt = match_id)
   })
   
@@ -251,7 +272,7 @@ function(input, output, session) {
         show.legend = FALSE
       ) +
     geom_line(
-      data = combinedRecentMatchData,
+      data = combinedRecentMatchData(),
       aes(x = date, y = roll, group = player_name, colour = player_name),
       size = 1
     ) +
@@ -269,7 +290,7 @@ function(input, output, session) {
     ) +
     scale_x_continuous(
       limits = as.POSIXct(c(as.character(Sys.Date() - 100), as.character(Sys.Date()))),
-      # breaks = as.POSIXct(c("2020-07-01", "2021-01-01", "2021-07-01", "2022-01-01", "2022-07-01"))
+      breaks = as.POSIXct(c(as.character(Sys.Date() - 100), as.character(Sys.Date() - 50), as.character(Sys.Date())))
     ) +
     theme_bw() +
     theme(
@@ -297,9 +318,19 @@ function(input, output, session) {
   # DATA OUTPUT
   data_output <- reactive({
     if (input$data_radioGroup == 208812212) {
-      mhRecentMatchData
+      mhRecentMatchData()
     } else if (input$data_radioGroup == 1075592541) {
-      bottleRecentMatchData
+      bottleRecentMatchData()
+    } else if (input$data_radioGroup == 156306162) {
+      shiriRecentMatchData()
+    } else if (input$data_radioGroup == 1075655293) {
+      baconRecentMatchData()
+    } else if (input$data_radioGroup == 103619307) {
+      catRecentMatchData()
+    } else if (input$data_radioGroup == 1079351025) {
+      moreRecentMatchData()
+    } else if (input$data_radioGroup == 100501459) {
+      bossRecentMatchData()
     }
   })
   
