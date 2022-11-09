@@ -3,8 +3,10 @@
 .RData
 .Ruserdata
 
-/secret/*
-/temp/*
-/rsconnect/*
+secret/*
+temp/*
+rsconnect/
+
+data/matches.rds
 
 *.Rproj

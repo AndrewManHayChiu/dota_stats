@@ -87,7 +87,53 @@ function(input, output, session) {
     calc_kla_ratio(bossRecentMatchDataReactive())
   })
 
+t
+# Game Durations ----------------------------------------------------------
+
+  # mhRecentMatchData %>%
+  #   summarise(
+  #     min_duration = min(duration),
+  #     mean_duration = mean(duration),
+  #     max_duration = max(duration)
+  # )
+
+
+# Radiant / Dire Win Rate -------------------------------------------------
+
+  # mhRecentMatchData %>%
+  # group_by(team) %>%
+  # summarise(winrate = sum(win) / length(win))
+
+
+# Games played ------------------------------------------------------------
+
+# mhRecentMatchData %>%
+#   count(localized_name)
+
+
+# win /lose streak --------------------------------------------------------------
+
+# calc_longest_streak(mhRecentMatchData)
+
+
+
+# Role wr -----------------------------------------------------------------
+
+# mhRecentMatchData %>%
+#   group_by(player_slot) %>%
+#   summarise(games_played = length(win),
+#             wins = sum(win),
+#             winrate = sum(win) / length(win)) %>%
+#   ungroup()
+# 
+# bottleRecentMatchData %>%
+#   group_by(player_slot) %>%
+#   summarise(games_played = length(win),
+#             wins = sum(win),
+#             winrate = sum(win) / length(win)) %>%
+#   ungroup()
   
+
   # WIN RATE BOXES
   output$mhWinRateBox <- renderValueBox({
     valueBox(
@@ -303,7 +349,7 @@ function(input, output, session) {
       bossRecentMatchData
     }
   })
-  
+    
   output$recent_match_data <- DT::renderDataTable(
     data_output(),
     options = list(scrollX = TRUE)
