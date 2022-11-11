@@ -7,48 +7,7 @@ library(DT)
 
 source('functions.R')
 
-patches <- c(7.25, 7.26, 7.27, 7.28, 7.29, 7.30, 7.31, 7.32)
-
-patch_dates <- data.frame(
-  patches,
-  start_date = as.POSIXct(c(
-    '2020-03-17', '2020-04-17', '2020-07-28', '2020-12-17', '2021-04-09', 
-    '2021-08-18', '2022-02-23', '2022-08-23')),
-  end_date = as.POSIXct(c(
-    '2020-04-17', '2020-07-28', '2020-12-17', '2021-04-09', '2021-08-18', 
-    '2022-02-23', '2022-08-23', as.character(Sys.Date()))),
-  col = c("#4F4D8C", "#5F5DA6", "#8F8EBF", "#2E4159", "#262626", 
-          "#4F4D8C", "#5F5DA6", "#8F8EBF"),
-  x = c(as.POSIXct(c(
-    '2020-03-20', '2020-04-20', '2020-08-01', '2020-12-20', '2021-04-12', 
-    '2021-08-21', '2022-02-26', '2022-08-26'))),
-  y = rep(0.025, 8)
-)
-
-players <- list(
-  "MH"     = 208812212,
-  "Bottle" = 1075592541,
-  "Shiri"  = 156306162,
-  "Cat"    = 103619307,
-  "Bacon"  = 1075655293,
-  "Mo"     = 152471066,
-  "More"   = 1079351025,
-  "Boss"   = 100501459
-)
-
-players_df <- data.frame(
-  player_name = names(unlist(players)), 
-  player_id = unlist(players)
-)
-
-heroes <- read.csv('data/heroes.csv')
-
-lanes <- data.frame(
-  lane_role = c(0, 1, 2, 3, 4),
-  lane = c("Unknown", "Safe", "Mid", "Off", "Jungle")
-)
-
-valBoxWidth <- 3
+match_stats_df <- read.csv('data/match_stats.csv')
 
 # Generate static data ----------------------------------------------------
 

@@ -1,0 +1,101 @@
+"match_id","player_id","rank_tier","rank_tier_str","party_id","party_size","hero","team","lane","position","win","net_wealth","last_hits","camps_stacked","denies","patch","duration","region","observers","sentries","healing"
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0
+6856617943,190865034,42,"Archon 2",0,2,"Crystal Maiden","Radiant","Safe","Pos5",TRUE,13208,44,3,2,"7.32",2650,"Singapore",13,26,195
+6856617943,293714536,24,"Crusader 4",0,2,"Phantom Assassin","Radiant","Safe","Pos1",TRUE,25455,274,0,10,"7.32",2650,"Singapore",NA,NA,0
+6856617943,209068153,15,"Herald 5",1,3,"Grimstroke","Radiant","Off","Pos4",TRUE,14036,42,1,3,"7.32",2650,"Singapore",6,8,0
+6856617943,NA,NA,NA,1,3,"Legion Commander","Radiant","Off","Pos3",TRUE,21342,212,0,23,"7.32",2650,"Singapore",NA,NA,2967
+6856617943,NA,NA,NA,1,3,"Death Prophet","Radiant","Mid","Pos2",TRUE,21278,158,1,3,"7.32",2650,"Singapore",1,1,195
+6856617943,NA,NA,NA,2,3,"Gyrocopter","Dire","Jungle",NA,FALSE,12545,82,4,1,"7.32",2650,"Singapore",8,7,400
+6856617943,138207042,42,"Archon 2",2,3,"Alchemist","Dire","Safe","Pos1",FALSE,30150,394,3,4,"7.32",2650,"Singapore",NA,3,0
+6856617943,NA,NA,NA,2,3,"Puck","Dire","Mid","Pos2",FALSE,20147,260,1,20,"7.32",2650,"Singapore",4,1,0
+6856617943,1075592541,42,"Archon 2",3,2,"Shadow Shaman","Dire","Off","Pos3",FALSE,15758,108,0,2,"7.32",2650,"Singapore",7,13,195
+6856617943,208812212,24,"Crusader 4",3,2,"Dragon Knight","Dire","Off","Pos4",FALSE,12054,123,0,13,"7.32",2650,"Singapore",2,1,0

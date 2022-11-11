@@ -9,6 +9,65 @@ fileName <- 'secret/api_key.txt'
 api_key <- readChar(fileName, file.info(fileName)$size)
 rm(fileName)
 
+
+# data --------------------------------------------------------------------
+
+patches <- fromJSON("https://raw.githubusercontent.com/odota/dotaconstants/master/json/patch.json")
+patch_colours <- c("#4F4D8C", "#5F5DA6", "#8F8EBF", "#2E4159", "#262626")
+
+patch_dates <- patches %>%
+  select(
+    id,
+    patch = name,
+    start_date = date) %>%
+  mutate(
+    start_date = as.POSIXct(start_date),
+    end_date = lead(start_date, n = 1, default = Sys.Date()),
+    x = start_date + days(3),
+    y = 0.025,
+    col = rep(patch_colours, len = dim(patches)[1]))
+
+players <- list(
+  "MH"     = 208812212,
+  "Bottle" = 1075592541,
+  "Shiri"  = 156306162,
+  "Cat"    = 103619307,
+  "Bacon"  = 1075655293,
+  "Mo"     = 152471066,
+  "More"   = 1079351025,
+  "Boss"   = 100501459
+)
+
+players_df <- data.frame(
+  player_name = names(unlist(players)), 
+  player_id = unlist(players)
+)
+
+heroes_json <- fromJSON("https://raw.githubusercontent.com/odota/dotaconstants/master/build/heroes.json")
+
+heroes <- data.frame(
+  id = unlist(lapply(heroes_json, function(x) x[[1]])),
+  hero_name = unlist(lapply(heroes_json, function(x) x[[2]])),
+  localized_name = unlist(lapply(heroes_json, function(x) x[[3]])),
+  primary_attr = unlist(lapply(heroes_json, function(x) x[[4]])),
+  attack_type = unlist(lapply(heroes_json, function(x) x[[5]]))
+)
+
+lanes <- data.frame(
+  lane_role = c(0, 1, 2, 3, 4),
+  lane = c("Unknown", "Safe", "Mid", "Off", "Jungle")
+)
+
+positions <- data.frame(
+  lane = c('Safe', 'Safe', 'Mid', 'Off', 'Off'),
+  core = c(T, F, T, T, F),
+  position1 = c('Pos1', 'Pos5', 'Pos2', 'Pos3', 'Pos4'),
+  position2 = c('Safe Lane', 'Hard Support', 'Mid Lane', 'Soft Support', 'Off Lane')
+)
+
+
+# Functions ---------------------------------------------------------------
+
 value_box_colour <- function(value) {
   if (value < .4) {
     "red"
@@ -68,8 +127,8 @@ get_rank_tier <- function(rank_tier) {
 }
 
 # Test
-get_rank_tier(25)
-get_rank_tier(NA)
+# get_rank_tier(25)
+# get_rank_tier(NA)
 
 # mhRecentMatchData %>% select(match_id, date)
 
@@ -127,6 +186,9 @@ get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lo
 
 # recent_match_data <- get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 100)
 # recent_match_data
+
+
+# Metrics -----------------------------------------------------------------
 
 calc_kla_ratio <- function(recent_match_data) {
   kills_assists <- (sum(recent_match_data$kills) + sum(recent_match_data$assists))
