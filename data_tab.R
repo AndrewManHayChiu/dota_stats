@@ -25,7 +25,7 @@ dataBody <- tabItem(
     box(
       width = 12,
       h2("Recent matches"),
-      downloadButton("downloadData", "Download"), 
+      downloadButton("downloadData", "Download"),
       dataTableOutput("recent_match_data")
     )
   )

@@ -5,10 +5,9 @@ account: chiumanhay
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7351737
-bundleId: 6422809
+bundleId: 6505376
 url: https://chiumanhay.shinyapps.io/dota_stats/
-when: 1666267638.51342
-lastSyncTime: 1666267638.51342
+when: 1668233649.22279
+lastSyncTime: 1668233649.22279
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: temp/get_data.R

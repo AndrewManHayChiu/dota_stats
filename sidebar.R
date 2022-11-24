@@ -45,13 +45,13 @@ custom_sidebar <- sidebarMenu(
   ),
   br(),
   
-  p("Not yet implemented"),
-  sliderInput(
-    inputId = "patchSlider",
-    label = "Patch",
-    min = min(patches),
-    max = max(patches),
-    value = c(min(patches), max(patches)),
-    step = 0.01
-  )
+  p("Not yet implemented")
+  # sliderInput(
+  #   inputId = "patchSlider",
+  #   label = "Patch",
+  #   min = min(patches$name),
+  #   max = max(patches$name),
+  #   value = c(min(patches$name), max(patches$name))
+  #   # step = 0.01
+  # )
 )

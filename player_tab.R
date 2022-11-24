@@ -4,6 +4,8 @@ playerBody <- tabItem(
   h1("Battle Report"),
   
   p("Based on Dota's Battle Report"),
+  # p(textOutput("selected_player")),
+  # p(textOutput("selected_patch")),
   
   fluidRow(
     radioGroupButtons(
@@ -17,10 +19,10 @@ playerBody <- tabItem(
     radioGroupButtons(
       inputId = "patch_radioGroup",
       label = "Patch",
-      choices = patches,
+      choices = tail(patches$name),
       justified = TRUE,
       status = "primary",
-      selected = 7.32
+      selected = max(patches$name)
     )
   ),
   
@@ -28,23 +30,18 @@ playerBody <- tabItem(
   fluidRow(
     box(
       width = 4,
-      title = "Featured Hero"
+      title = "Featured Hero",
+      h3(textOutput("battle_report_featured_hero"))
     ),
     box(
       width = 4,
-      title = "Featured Lane"
+      title = "Featured Lane",
+      h3(textOutput("battle_report_featured_role"))
     ),
     box(
       width = 4,
       title = "Overall Performance",
-      valueBox(
-        value = "5 - 10",
-        subtitle = "Win - Loss"
-      ),
-      valueBox(
-        value = "33%",
-        subtitle = "Win Rate"
-      )
+      h3(textOutput("battle_report_win_rate"))
     ),
   ),
   
@@ -54,26 +51,35 @@ playerBody <- tabItem(
       width = 4,
       title = "Game Duration",
       valueBox(
-        value = "20 mins",
+        value = textOutput('battle_report_shortest_game_duration'),
         subtitle = "Shortest Game"
       ),
       valueBox(
-        value = "65 mins",
-        subtitle = "Longest Game"
+        value = textOutput('battle_report_average_game_duration'),
+        subtitle = "Average Game"
       ),
       valueBox(
-        value = "30 mins",
-        subtitle = "Average Duration"
+        value = textOutput('battle_report_longest_game_duration'),
+        subtitle = "Longest Duration"
       )
       
     ),
     box(
       width = 4,
-      title = "Dire vs Radiant Win Rate"
+      title = "Dire vs Radiant Win Rate",
+      box(
+        title = "Radiant",
+        textOutput("battle_report_radiant_winrate")
+      ),
+      box(
+        title = "Dire",
+        textOutput("battle_report_dire_winrate")
+      )
     ),
     box(
       width = 4,
-      title = "Overall Roles Played and Win Rate"
+      title = "Overall Roles Played and Win Rate",
+      plotOutput("battle_report_roles_winrate_plot")
     )
   ),
   

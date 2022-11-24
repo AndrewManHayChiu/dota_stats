@@ -26,11 +26,7 @@ combinedRecentMatchData <- mhRecentMatchData %>%
   bind_rows(baconRecentMatchData) %>%
   bind_rows(catRecentMatchData) %>%
   bind_rows(moreRecentMatchData) %>%
-  bind_rows(bossRecentMatchData) %>%
-  left_join(
-    heroes %>%
-      select(hero_id = id, localized_name),
-    by = "hero_id")
+  bind_rows(bossRecentMatchData)
 
 mhWinRateAllTime     <- sum(mhRecentMatchData$win) / length(mhRecentMatchData$win)
 bottleWinRateAllTime <- sum(bottleRecentMatchData$win) / length(bottleRecentMatchData$win)

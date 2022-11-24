@@ -87,54 +87,173 @@ function(input, output, session) {
     calc_kla_ratio(bossRecentMatchDataReactive())
   })
 
-t
-# Game Durations ----------------------------------------------------------
 
-  # mhRecentMatchData %>%
-  #   summarise(
-  #     min_duration = min(duration),
-  #     mean_duration = mean(duration),
-  #     max_duration = max(duration)
-  # )
+# Battle Report data ------------------------------------------------------
 
-
-# Radiant / Dire Win Rate -------------------------------------------------
-
-  # mhRecentMatchData %>%
-  # group_by(team) %>%
-  # summarise(winrate = sum(win) / length(win))
-
-
-# Games played ------------------------------------------------------------
-
-# mhRecentMatchData %>%
-#   count(localized_name)
-
-
-# win /lose streak --------------------------------------------------------------
-
-# calc_longest_streak(mhRecentMatchData)
-
-
-
-# Role wr -----------------------------------------------------------------
-
-# mhRecentMatchData %>%
-#   group_by(player_slot) %>%
-#   summarise(games_played = length(win),
-#             wins = sum(win),
-#             winrate = sum(win) / length(win)) %>%
-#   ungroup()
-# 
-# bottleRecentMatchData %>%
-#   group_by(player_slot) %>%
-#   summarise(games_played = length(win),
-#             wins = sum(win),
-#             winrate = sum(win) / length(win)) %>%
-#   ungroup()
+  output$selected_player <- renderText({
+    input$player_radioGroup
+  })
+  
+  output$selected_patch <- renderText({
+    input$patch_radioGroup
+  })
+  
+  battle_report_data <- reactive({
+    match_stats_df %>%
+      filter(player_id == input$player_radioGroup,
+             patch == input$patch_radioGroup)
+      # filter(player_id == 208812212)
+  })
   
 
-  # WIN RATE BOXES
+# Featured Hero stats -----------------------------------------------------
+
+  
+  output$battle_report_featured_hero <- renderText({
+    battle_report_data() %>%
+      count(hero) %>%
+      top_n(1, wt = n) %>%
+      .$hero
+  })
+  
+  output$battle_report_featured_role <- renderText({
+    battle_report_data() %>%
+      count(position) %>%
+      top_n(1, wt = n) %>%
+      .$position
+  })
+  
+
+# Win rate stats ----------------------------------------------------------
+
+  output$battle_report_win_rate <- renderText({
+    matches_won <- battle_report_data() %>%
+      count(win) %>%
+      filter(win == T) %>%
+      .$n
+    
+    matches_lost <- battle_report_data() %>%
+      count(win) %>%
+      filter(win == F) %>%
+      .$n
+    
+    matches_won <- ifelse(length(matches_won) == 0, 0, matches_won)
+    matches_lost <- ifelse(length(matches_lost) == 0, 0, matches_lost)
+    
+    winrate <- matches_won / (matches_won + matches_lost)
+    
+    paste(matches_won, "-", matches_lost, "|", scales::percent(winrate), "Winrate", sep = " ")
+  })
+  
+
+# Game duration stats -----------------------------------------------------
+
+  battle_report_game_durations <- reactive({
+    battle_report_data() %>%
+      summarise(
+        min = min(duration),
+        avg = mean(duration),
+        max = max(duration)) %>%
+      gather(stat, duration) %>%
+      mutate(
+        min = floor(duration / 60),
+        sec = round(duration %% 60, 0),
+        minsec = paste(min, sec),
+        minsec = lubridate::ms(minsec)
+      )
+  })
+  
+  output$battle_report_shortest_game_duration <- renderText({
+    battle_report_game_durations() %>%
+      filter(stat == 'min') %>%
+      .$minsec %>%
+      as.character()
+  })
+  
+  output$battle_report_average_game_duration <- renderText({
+    battle_report_game_durations() %>%
+      filter(stat == 'avg') %>%
+      .$minsec %>%
+      as.character()
+  })
+  
+  output$battle_report_longest_game_duration <- renderText({
+    battle_report_game_durations() %>%
+      filter(stat == 'max') %>%
+      .$minsec %>%
+      as.character()
+  })
+  
+
+# Roles and winrates ------------------------------------------------------
+
+  output$battle_report_roles_winrate_plot <- renderPlot({
+    roles_winrate <- battle_report_data() %>%
+      group_by(position, win) %>%
+      count() %>%
+      ungroup() %>%
+      spread(win, n) %>%
+      full_join(
+        data.frame(position = c("Pos1", "Pos2", "Pos3", "Pos4", "Pos5"))
+      ) %>%
+      rename(lost = `FALSE`, won = `TRUE`) %>%
+      replace_na(list(lost = 0, won = 0)) %>%
+      mutate(
+        games_played = lost + won,
+        winrate = won / (won + lost),
+        winrate = ifelse(is.na(winrate), 0, winrate),
+        winrate = scales::percent(winrate)) %>%
+      arrange(position)
+    roles_winrate
+    
+    roles_winrate %>%
+      ggplot() +
+      geom_col(aes(x = games_played, y = position)) +
+      geom_text(aes(x = games_played, y = position, label = winrate), hjust = -0.5,) +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) +
+      labs(y = "",
+           x = "")
+  })
+  
+
+# Radiant Dire Winrates ---------------------------------------------------
+
+  battle_report_dire_radiant_winrate_data <- reactive({
+    battle_report_data() %>%
+      group_by(team, win) %>%
+      count() %>%
+      ungroup() %>% 
+      spread(win, n) %>%
+      rename(lost = `FALSE`, won = `TRUE`) %>%
+      replace_na(list(lost = 0, won = 0)) %>%
+      mutate(
+        games_played = lost + won,
+        winrate = won / games_played,
+        winrate = ifelse(is.na(winrate), 0, winrate),
+        winrate = scales::percent(winrate))
+  })
+  
+  battle_report_radiant_winrate <- renderText({
+    battle_report_dire_radiant_winrate_data() %>%
+      filter(team == 'Radiant') %>%
+      .$winrate %>%
+      as.character()
+  })
+  
+  battle_report_dire_winrate <- renderText({
+    battle_report_dire_radiant_winrate_data() %>%
+      filter(team == 'Dire') %>%
+      .$winrate %>%
+      as.character()
+  })
+
+
+
+# Win rate boxes ----------------------------------------------------------
+
   output$mhWinRateBox <- renderValueBox({
     valueBox(
       scales::percent(round(mhWinRate(), 2)), 
@@ -243,7 +362,7 @@ t
   
   # KLA vs WIN RATE SCATTER PLOT
   output$klaWinRateScatterPlot <- renderPlot({
-    
+
     mhRecentMatchDataReactive() %>%
       bind_rows(bottleRecentMatchDataReactive()) %>%
       bind_rows(shiriRecentMatchDataReactive()) %>%
@@ -294,7 +413,7 @@ t
     ) +
     geom_text(
       data = patch_dates,
-      aes(x = x, y = y, label = patches),
+      aes(x = x, y = y, label = patch),
       size = 3,
       hjust = 0,
       vjust = 2
@@ -349,12 +468,12 @@ t
       bossRecentMatchData
     }
   })
-    
+
   output$recent_match_data <- DT::renderDataTable(
     data_output(),
     options = list(scrollX = TRUE)
   )
-  
+
   output$downloadData <- downloadHandler(
     filename = function() {
       paste(input$data_radioGroup, ".csv", sep = "")

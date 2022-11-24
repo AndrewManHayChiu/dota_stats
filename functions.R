@@ -100,6 +100,8 @@ get_match_data <- function(match_id, api_key = api_key) {
   match_data
 }
 
+match_data <- get_match_data(match_id = 6856617943, api_key = api_key)
+
 get_rank_tier <- function(rank_tier) {
   
   ranks <- list(
@@ -128,25 +130,6 @@ get_rank_tier <- function(rank_tier) {
 
 # Test
 # get_rank_tier(25)
-# get_rank_tier(NA)
-
-# mhRecentMatchData %>% select(match_id, date)
-
-# match_df <- get_match_data(match_id = "6814105296", api_key = api_key)
-
-# match_df$lobby_type
-# match_df$players$lane       # 1 Bot, 2 - mid, 3 - Top, 4 - Radiant Jungle, 5 - Dire Jungle
-# match_df$players$lane_role  # 0 - Unknown, 1 - Safelane, 2 - Mid, 3 - Off, 4 - Jungle
-# match_df$players$lane_pos
-# match_df$players$camps_stacked
-# match_df$players$
-# match_df$patch
-# match_df$region
-# match_df$throw
-# match_df$comeback
-# match_df$loss
-# match_df$win
-
 
 win <- function(team, radiant_win) {
   if (team == "Radiant" & radiant_win == TRUE) {
@@ -217,4 +200,3 @@ calc_longest_streak <- function(recent_match_data) {
 }
 
 # calc_longest_streak(mhRecentMatchData)
-# calc_longest_streak(bottleRecentMatchData)

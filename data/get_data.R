@@ -24,10 +24,10 @@ mh_match_ids <- mhRecentMatchData$match_id
 
 # Then download the match data for the match IDs
 
-# matches <- list() # for a fresh start
+matches <- list() # for a fresh start
 
 for (id in mh_match_ids[!mh_match_ids %in% names(matches)][1:10]) {
-  match_data <- get_match_data(match_id = mh_match_ids[1], api_key = api_key)
+  match_data <- get_match_data(match_id = id, api_key = api_key)
 
   matches[[as.character(id)]] <- match_data
 }
@@ -42,31 +42,32 @@ saveRDS(matches, "data/matches.rds")
 # match_data <- get_match_data(match_id = 6852756675, api_key = api_key)
 
 match_id <- names(matches)[1]
-
+match_id
 match_data_list <- matches[[match_id]]
+match_data_list
 
-names(match_data_list)
-
-# Damage dealt
-names(match_data_list$players$damage)
-names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
-names(match_data_list$players$damage)[grepl('^illusion_npc_dota_hero', names(match_data_list$players$damage))]
-
-player_damage_columns <- names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
-match_data_list$players$damage[player_damage_columns]
-lapply(match_data_list$players$damage[player_damage_columns], function(x) sum(x, na.rm = T))
-
-# Damage received
-match_data_list$players$damage_taken
-player_damage_taken_cols <- names(match_data_list$players$damage_taken)[grepl('^npc_dota_hero', names(match_data_list$players$damage_taken))]
-data.frame(hero_name = player_damage_taken_cols, damage_received = unlist(lapply(match_data_list$players$damage_taken[player_damage_taken_cols], function(x) sum(x, na.rm = T))))
-
-# Gold reasons
-gold_reasons <- match_data_list$players$gold_reasons
-names(gold_reasons) <- c('Other', 'Death', 'Sell', 'Building', 'Hero', 'Creep', 'Neutrals', 'Roshan', 'Courier', 'Rune', 19, 'Ward')
-gold_reasons
-
-match_data_list$players$xp_reasons
+# names(match_data_list)
+# 
+# # Damage dealt
+# names(match_data_list$players$damage)
+# names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
+# names(match_data_list$players$damage)[grepl('^illusion_npc_dota_hero', names(match_data_list$players$damage))]
+# 
+# player_damage_columns <- names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
+# match_data_list$players$damage[player_damage_columns]
+# lapply(match_data_list$players$damage[player_damage_columns], function(x) sum(x, na.rm = T))
+# 
+# # Damage received
+# match_data_list$players$damage_taken
+# player_damage_taken_cols <- names(match_data_list$players$damage_taken)[grepl('^npc_dota_hero', names(match_data_list$players$damage_taken))]
+# data.frame(hero_name = player_damage_taken_cols, damage_received = unlist(lapply(match_data_list$players$damage_taken[player_damage_taken_cols], function(x) sum(x, na.rm = T))))
+# 
+# # Gold reasons
+# gold_reasons <- match_data_list$players$gold_reasons
+# names(gold_reasons) <- c('Other', 'Death', 'Sell', 'Building', 'Hero', 'Creep', 'Neutrals', 'Roshan', 'Courier', 'Rune', 19, 'Ward')
+# gold_reasons
+# 
+# match_data_list$players$xp_reasons
 
 
 
@@ -132,10 +133,9 @@ match_stats_df <- data.frame()
 match_ids <- names(matches)
 
 for (match_id in match_ids) {
-  
-  # match_stats <- get_match_stats(matches[[match_id]])
-  
-  match_stats_df <- match_stats_df %>%
+  print(match_id)
+
+    match_stats_df <- match_stats_df %>%
     bind_rows(get_match_stats(matches[[match_id]]))
   
 }
@@ -146,3 +146,112 @@ match_stats_df
 # save match stats to csv -------------------------------------------------
 
 write.csv(match_stats_df, "data/match_stats.csv", row.names = F)
+
+
+# Match stats for battle report -------------------------------------------
+
+match_stats <- read.csv('data/match_stats.csv')
+
+# win rate
+matches_won <- match_stats %>%
+  filter(
+    player_id == 208812212,
+    patch == 7.32
+  ) %>%
+  count(win) %>%
+  filter(win == T) %>%
+  .$n
+
+
+matches_lost <- match_stats %>%
+  filter(
+    player_id == 156306162,
+    patch == 7.32
+  ) %>%
+  count(win) %>%
+  filter(win == F) %>%
+  .$n
+
+matches_won <- ifelse(length(matches_won) == 0, 0, matches_won)
+matches_lost <- ifelse(length(matches_lost) == 0, 0, matches_lost)
+
+winrate <- matches_won / (matches_won + matches_lost)
+
+scales::percent(winrate)
+
+paste0(matches_won, "-", matches_lost, " ", scales::percent(winrate), " Winrate")
+
+# Game durations
+
+match_stats %>%
+  filter(
+    player_id == 208812212,
+    patch == 7.32
+  ) %>%
+  summarise(
+    min = min(duration),
+    avg = mean(duration),
+    max = max(duration)) %>%
+  gather(stat, duration) %>%
+  mutate(
+    min = floor(duration / 60),
+    sec = round(duration %% 60, 0),
+    minsec = paste(min, sec),
+    minsec = lubridate::ms(minsec)
+  )
+
+# Roles played and win rate
+
+roles_winrate <- match_stats %>%
+  filter(
+    player_id == 208812212,
+    patch == 7.32
+  ) %>%
+  group_by(position, win) %>%
+  count() %>%
+  ungroup() %>%
+  spread(win, n) %>%
+  full_join(
+    data.frame(position = c("Pos1", "Pos2", "Pos3", "Pos4", "Pos5"))
+  ) %>%
+  rename(lost = `FALSE`, won = `TRUE`) %>%
+  replace_na(list(lost = 0, won = 0)) %>%
+  mutate(
+    games_played = lost + won,
+    winrate = won / (won + lost),
+    winrate = ifelse(is.na(winrate), 0, winrate),
+    winrate = scales::percent(winrate)) %>%
+  arrange(position)
+roles_winrate
+
+library(ggplot2)
+
+roles_winrate %>%
+  ggplot() +
+  geom_col(aes(x = games_played, y = position)) +
+  geom_text(aes(x = games_played, y = position, label = winrate), hjust = -0.5,) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank()) +
+  labs(y = "",
+       x = "")
+
+# Dire vs Radiant
+
+match_stats %>%
+  filter(
+    player_id == 208812212,
+    patch == 7.32
+  ) %>%
+  group_by(team, win) %>%
+  count() %>%
+  ungroup() %>% 
+  spread(win, n) %>%
+  rename(lost = `FALSE`, won = `TRUE`) %>%
+  replace_na(list(lost = 0, won = 0)) %>%
+  mutate(
+    games_played = lost + won,
+    winrate = won / games_played,
+    winrate = ifelse(is.na(winrate), 0, winrate),
+    winrate = scales::percent(winrate))
