@@ -1,75 +1,92 @@
 # The purpose of this script is to download detailed match data,
 # which will then be saved locally rather than making calls each time.
 
+setwd("C:/Users/amhch/OneDrive/Projects/dota_stats")
+
 source('./functions.R')
 
 # Get any existing match data from rds file
 matches <- readRDS("data/matches.rds")
 
 # First step is to get players match IDs
-mhRecentMatchData <- get_recent_matches_data(
-  player_id = 208812212, 
-  api_key = api_key, 
-  limit = 400)
+# mhRecentMatchData <- get_recent_matches_data(
+#   player_id = 208812212, 
+#   api_key = api_key, 
+#   limit = 400)
 
-mhRecentMatchData
-
-mh_match_ids <- mhRecentMatchData$match_id
+# mhRecentMatchData
+ 
+# mh_match_ids <- mhRecentMatchData$match_id
 
 # Compare to existing match data
 # mh_match_ids[mh_match_ids %in% names(matches)]
 # mh_match_ids[!mh_match_ids %in% names(matches)]
 
-# TODO: Check if the existing math data has already been parsed
-
 # Then download the match data for the match IDs
 
-matches <- list() # for a fresh start
+# matches <- list() # for a fresh start
 
-for (id in mh_match_ids[!mh_match_ids %in% names(matches)][1:10]) {
-  match_data <- get_match_data(match_id = id, api_key = api_key)
+# for (id in mh_match_ids[!mh_match_ids %in% names(matches)][1:20]) {
+#   match_data <- get_match_data(match_id = id, api_key = api_key)
+#   
+#   # Don't keep the data if match has not been parsed
+#   # This ensures that the raw data will not be saved
+#   # and can be filled in the future after it has been parsed
+#   if (length(match_data$players$ability_uses != 10)) {
+#     matches[[as.character(id)]] <- match_data
+#   }
+# }
 
-  matches[[as.character(id)]] <- match_data
+# players
+
+for (player_id in players) {
+  
+  print(paste("Player ID:", player_id))
+  
+  player_recent_matches <- get_recent_matches_data(
+    player_id = player_id,
+    api_key = api_key,
+    limit = 400
+  )
+  
+  # Some accounts threw server error (status_code: 500)
+  # get_recent_matches_data function modified to return NULL in this case
+  if (!is.null(player_recent_matches)) {
+    
+    player_match_ids <- player_recent_matches$match_id
+    
+    for (match_id in player_match_ids[!player_match_ids %in% names(matches)][1:10]) {
+      
+      print(paste("Match ID:", match_id))
+      
+      match_data <- get_match_data(match_id = match_id, api_key = api_key)
+      
+      # Don't keep the data if match has not been parsed
+      # This ensures that the raw data will not be saved
+      # and can be filled in the future after it has been parsed
+      if (length(match_data$players$ability_uses) > 10) {
+        print("Match data parsed")
+        matches[[as.character(match_id)]] <- match_data
+      } else if (length(match_data$players$ability_uses) == 10) {
+        print("Match data not parsed")
+      } else {
+        print("Match data not available")
+      }
+    }
+  } else {
+    print("No data available")
+  }
 }
 
-# Save data to rdata file
+# names(matches)
+# matches[[1]]
+# matches[[2]]
+
+# Save raw data to rdata file
 saveRDS(matches, "data/matches.rds")
 
 
-
-# Match data exploration --------------------------------------------------
-
-# match_data <- get_match_data(match_id = 6852756675, api_key = api_key)
-
-match_id <- names(matches)[1]
-match_id
-match_data_list <- matches[[match_id]]
-match_data_list
-
-# names(match_data_list)
-# 
-# # Damage dealt
-# names(match_data_list$players$damage)
-# names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
-# names(match_data_list$players$damage)[grepl('^illusion_npc_dota_hero', names(match_data_list$players$damage))]
-# 
-# player_damage_columns <- names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
-# match_data_list$players$damage[player_damage_columns]
-# lapply(match_data_list$players$damage[player_damage_columns], function(x) sum(x, na.rm = T))
-# 
-# # Damage received
-# match_data_list$players$damage_taken
-# player_damage_taken_cols <- names(match_data_list$players$damage_taken)[grepl('^npc_dota_hero', names(match_data_list$players$damage_taken))]
-# data.frame(hero_name = player_damage_taken_cols, damage_received = unlist(lapply(match_data_list$players$damage_taken[player_damage_taken_cols], function(x) sum(x, na.rm = T))))
-# 
-# # Gold reasons
-# gold_reasons <- match_data_list$players$gold_reasons
-# names(gold_reasons) <- c('Other', 'Death', 'Sell', 'Building', 'Hero', 'Creep', 'Neutrals', 'Roshan', 'Courier', 'Rune', 19, 'Ward')
-# gold_reasons
-# 
-# match_data_list$players$xp_reasons
-
-
+# Function to extract match stats from raw data ---------------------------
 
 get_match_stats <- function(data) {
   data.frame(
@@ -100,7 +117,7 @@ get_match_stats <- function(data) {
     mutate(
       team = ifelse(is_radiant, 'Radiant', 'Dire'),
       region = ifelse(region == 5, 'Singapore', ifelse(region == 7, 'Australia', NA))
-      ) %>%
+    ) %>%
     rowwise() %>%
     mutate(
       win = win(team, radiant_win),
@@ -123,6 +140,10 @@ get_match_stats <- function(data) {
       observers, sentries, healing)
 } 
 
+match_id <- names(matches)[3]
+match_data_list <- matches[[match_id]]
+match_data_list
+
 get_match_stats(match_data_list)
 
 
@@ -134,8 +155,8 @@ match_ids <- names(matches)
 
 for (match_id in match_ids) {
   print(match_id)
-
-    match_stats_df <- match_stats_df %>%
+  
+  match_stats_df <- match_stats_df %>%
     bind_rows(get_match_stats(matches[[match_id]]))
   
 }
@@ -146,6 +167,37 @@ match_stats_df
 # save match stats to csv -------------------------------------------------
 
 write.csv(match_stats_df, "data/match_stats.csv", row.names = F)
+
+# Match data exploration --------------------------------------------------
+
+
+match_id <- names(matches)[1]
+match_id
+match_data_list <- matches[[match_id]]
+match_data_list
+
+# names(match_data_list)
+# 
+# # Damage dealt
+# names(match_data_list$players$damage)
+# names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
+# names(match_data_list$players$damage)[grepl('^illusion_npc_dota_hero', names(match_data_list$players$damage))]
+# 
+# player_damage_columns <- names(match_data_list$players$damage)[grepl('^npc_dota_hero', names(match_data_list$players$damage))]
+# match_data_list$players$damage[player_damage_columns]
+# lapply(match_data_list$players$damage[player_damage_columns], function(x) sum(x, na.rm = T))
+# 
+# # Damage received
+# match_data_list$players$damage_taken
+# player_damage_taken_cols <- names(match_data_list$players$damage_taken)[grepl('^npc_dota_hero', names(match_data_list$players$damage_taken))]
+# data.frame(hero_name = player_damage_taken_cols, damage_received = unlist(lapply(match_data_list$players$damage_taken[player_damage_taken_cols], function(x) sum(x, na.rm = T))))
+# 
+# # Gold reasons
+# gold_reasons <- match_data_list$players$gold_reasons
+# names(gold_reasons) <- c('Other', 'Death', 'Sell', 'Building', 'Hero', 'Creep', 'Neutrals', 'Roshan', 'Courier', 'Rune', 19, 'Ward')
+# gold_reasons
+# 
+# match_data_list$players$xp_reasons
 
 
 # Match stats for battle report -------------------------------------------

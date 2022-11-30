@@ -150,24 +150,29 @@ get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lo
                 "?lobby_type=0",
                 "?game_mode=", game_mode)
   res <- GET(url)
-  recent_matches_data <- fromJSON(rawToChar(res$content))
   
-  recent_matches_data$player_id <- player_id
-  recent_matches_data$team <- ifelse(recent_matches_data$player_slot <= 127, 'Radiant', 'Dire')
-  
-  recent_matches_data %>%
-    rowwise() %>%
-    mutate(win = win(team, radiant_win)) %>%
-    ungroup() %>%
-    left_join(players_df, by = "player_id") %>%
-    left_join(heroes, by = c("hero_id" = "id")) %>%
-    arrange(desc(match_id)) %>%
-    mutate(roll = zoo::rollmean(win, k = 20, fill = NA),
-           date = as.POSIXct(start_time, tz = "UTC", origin = "1970-01-01"),
-           duration_minutes = seconds_to_period(duration))
+  if (res$status_code == 200) {
+    
+    recent_matches_data <- fromJSON(rawToChar(res$content))
+    
+    recent_matches_data$player_id <- player_id
+    recent_matches_data$team <- ifelse(recent_matches_data$player_slot <= 127, 'Radiant', 'Dire')
+    
+    recent_matches_data %>%
+      rowwise() %>%
+      mutate(win = win(team, radiant_win)) %>%
+      ungroup() %>%
+      left_join(players_df, by = "player_id") %>%
+      left_join(heroes, by = c("hero_id" = "id")) %>%
+      arrange(desc(match_id)) %>%
+      mutate(roll = zoo::rollmean(win, k = 20, fill = NA),
+             date = as.POSIXct(start_time, tz = "UTC", origin = "1970-01-01"),
+             duration_minutes = seconds_to_period(duration))
+  }
 }
 
 # recent_match_data <- get_recent_matches_data(player_id = 208812212, api_key = api_key, limit = 100)
+# recent_match_data <- get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 100)
 # recent_match_data
 
 
