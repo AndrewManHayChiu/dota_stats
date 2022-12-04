@@ -13,9 +13,9 @@ sidebar <- dashboardSidebar(
 
 
 body <- dashboardBody(
-    shinyDashboardThemes(
-        theme = "grey_dark"
-    ),
+    # shinyDashboardThemes(
+    #     theme = "poor_mans_flatly"
+    # ),
     
     tags$style(HTML("
                 

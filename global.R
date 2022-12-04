@@ -4,6 +4,7 @@ library(dashboardthemes)
 library(shinyWidgets)
 library(ggplot2)
 library(DT)
+library(gt)
 
 source('functions.R')
 

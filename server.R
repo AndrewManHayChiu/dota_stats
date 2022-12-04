@@ -102,7 +102,6 @@ function(input, output, session) {
     match_stats_df %>%
       filter(player_id == input$player_radioGroup,
              patch == input$patch_radioGroup)
-      # filter(player_id == 208812212)
   })
   
 
@@ -144,45 +143,95 @@ function(input, output, session) {
     
     paste(matches_won, "-", matches_lost, "|", scales::percent(winrate), "Winrate", sep = " ")
   })
-  
+
+
+# Number of matches parsed ------------------------------------------------
+
+  output$battle_report_games_parsed <- renderText({
+    battle_report_data() %>%
+      count() %>%
+      .$n
+  })  
 
 # Game duration stats -----------------------------------------------------
 
-  battle_report_game_durations <- reactive({
-    battle_report_data() %>%
+  battle_report_game_duration_stats <- reactive({
+    match_stats_df %>%
+      filter(
+        player_id %in% unlist(players),
+        patch == input$patch_radioGroup
+      ) %>%
+      group_by(player_id == input$player_radioGroup) %>%
       summarise(
-        min = min(duration),
-        avg = mean(duration),
-        max = max(duration)) %>%
-      gather(stat, duration) %>%
+        avg_seconds = mean(duration)) %>%
+      mutate(
+        avg_minutes = floor(avg_seconds / 60)
+      )  %>%
+      rename(player = 1)
+  })
+  
+  output$battle_report_game_duration_histogram <- renderPlot({
+    battle_report_data() %>%
       mutate(
         min = floor(duration / 60),
         sec = round(duration %% 60, 0),
         minsec = paste(min, sec),
         minsec = lubridate::ms(minsec)
-      )
+      ) %>%
+      ggplot(aes(x = min)) +
+      geom_histogram(binwidth = 10, colour = 'white') +
+      geom_segment(
+        data = battle_report_game_duration_stats(), 
+        aes(x = avg_minutes, xend = avg_minutes ,
+            y = 0, yend = 30),
+        colour = 'orange',
+        size = 1.5) +
+      geom_text(
+        data = battle_report_game_duration_stats(),
+        aes(x = avg_minutes, y = c(-2, -1), label = c('Clan avg', 'Your avg'))
+      ) +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) +
+      labs(x = "Minutes", y = "Matches")
   })
   
-  output$battle_report_shortest_game_duration <- renderText({
-    battle_report_game_durations() %>%
-      filter(stat == 'min') %>%
-      .$minsec %>%
-      as.character()
-  })
+  # battle_report_game_durations <- reactive({
+  #   battle_report_data() %>%
+  #     summarise(
+  #       min = min(duration),
+  #       avg = mean(duration),
+  #       max = max(duration)) %>%
+  #     gather(stat, duration) %>%
+  #     mutate(
+  #       min = floor(duration / 60),
+  #       sec = round(duration %% 60, 0),
+  #       minsec = paste(min, sec),
+  #       minsec = lubridate::ms(minsec)
+  #     )
+  # })
   
-  output$battle_report_average_game_duration <- renderText({
-    battle_report_game_durations() %>%
-      filter(stat == 'avg') %>%
-      .$minsec %>%
-      as.character()
-  })
-  
-  output$battle_report_longest_game_duration <- renderText({
-    battle_report_game_durations() %>%
-      filter(stat == 'max') %>%
-      .$minsec %>%
-      as.character()
-  })
+  # output$battle_report_shortest_game_duration <- renderText({
+  #   battle_report_game_durations() %>%
+  #     filter(stat == 'min') %>%
+  #     .$minsec %>%
+  #     as.character()
+  # })
+  # 
+  # output$battle_report_average_game_duration <- renderText({
+  #   battle_report_game_durations() %>%
+  #     filter(stat == 'avg') %>%
+  #     .$minsec %>%
+  #     as.character()
+  # })
+  # 
+  # output$battle_report_longest_game_duration <- renderText({
+  #   battle_report_game_durations() %>%
+  #     filter(stat == 'max') %>%
+  #     .$minsec %>%
+  #     as.character()
+  # })
   
 
 # Roles and winrates ------------------------------------------------------
@@ -202,23 +251,27 @@ function(input, output, session) {
         games_played = lost + won,
         winrate = won / (won + lost),
         winrate = ifelse(is.na(winrate), 0, winrate),
-        winrate = scales::percent(winrate)) %>%
+        winrate = scales::percent(winrate),
+        label_position = ifelse(games_played < 5, games_played + 2, games_played)) %>%
       arrange(position)
-    roles_winrate
     
     roles_winrate %>%
       ggplot() +
-      geom_col(aes(x = games_played, y = position)) +
-      geom_text(aes(x = games_played, y = position, label = winrate), hjust = -0.5,) +
+      geom_col(aes(x = games_played, y = position, fill = position), show.legend = F) +
+      geom_text(aes(x = label_position, y = position, label = winrate), hjust = -0.15) +
+      geom_text(aes(x = label_position, y = position, label = position), hjust = 1.25) +
+      scale_fill_manual(values = c("#8FC1B5", "#589A8D", "#007566", "#146551", "#265C4B")) + 
       theme_minimal() +
       theme(
         panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank()) +
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank()) +
       labs(y = "",
-           x = "")
-  })
+           x = "") +
+      scale_x_continuous(limits = c(0, max(roles_winrate$games_played + 1)))
   
-
+    })
+    
 # Radiant Dire Winrates ---------------------------------------------------
 
   battle_report_dire_radiant_winrate_data <- reactive({
@@ -236,23 +289,330 @@ function(input, output, session) {
         winrate = scales::percent(winrate))
   })
   
-  battle_report_radiant_winrate <- renderText({
+  output$battle_report_team_winrate_plot <- renderPlot({
+    
     battle_report_dire_radiant_winrate_data() %>%
-      filter(team == 'Radiant') %>%
-      .$winrate %>%
-      as.character()
+      ggplot(aes(x = team)) +
+      geom_col(aes(y = winrate)) +
+      geom_text(aes(y = winrate, label = winrate), vjust = -1.5) +
+      geom_text(aes(y = 0, label = team), vjust = -1.5, colour = "white") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank()) +
+      labs(x = "", y = "")
+  })
+
+
+# Role statistics ---------------------------------------------------------
+  
+  # box_plot_aesthetics <- geom_boxplot(
+  #   aes(fill = player),
+  #   show.legend = F) +
+  #   facet_grid(
+  #     statistic ~ position,
+  #     scales = "free",
+  #     switch = "y") +
+  #   theme_minimal() +
+  #   theme(
+  #     panel.grid.major = element_blank(),
+  #     panel.grid.minor = element_blank(),
+  #     axis.text.y = element_blank(),
+  #     # strip.text.y.left = element_text(angle = 0),
+  #     strip.text.y.left = element_blank(),
+  #     strip.background.x = element_rect(
+  #       fill = "grey25",
+  #       colour = "white"),
+  #     strip.text.x = element_text(colour = "white", face = "bold")
+  #   ) +
+  #   labs(x = '', y = '')
+  
+  battle_report_role_data <- reactive({
+    match_stats_df %>%
+      filter(
+        player_id %in% unlist(players),
+        patch == input$patch_radioGroup
+      ) %>%
+      mutate(player = ifelse(player_id == input$player_radioGroup, 'You', 'Others')) %>%
+      select(camps_stacked, last_hits, denies, 
+             observers, sentries, 
+             healing, 
+             net_wealth,
+             player, position) %>%
+      gather(statistic, value, -position, -player)
   })
   
-  battle_report_dire_winrate <- renderText({
-    battle_report_dire_radiant_winrate_data() %>%
-      filter(team == 'Dire') %>%
-      .$winrate %>%
-      as.character()
+  output$battle_report_role_camps_stacked <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'camps_stacked') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+      scale_fill_manual(values = c("grey75", "#F5B142"))
+  })
+  
+  output$battle_report_role_netwealth <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'net_wealth') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+      scale_fill_manual(values = c("grey75", "#A86D0C"))
+  })
+  
+  output$battle_report_role_denies <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'denies') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+      scale_fill_manual(values = c("grey75", "#429EF5"))
+  })
+
+  output$battle_report_role_last_hits <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'last_hits') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+      scale_fill_manual(values = c("grey75", "#5EB1FF"))
+  })
+
+  output$battle_report_role_healing <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'healing') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+      scale_fill_manual(values = c("grey75", "#1D65A8"))
+  })
+
+  output$battle_report_role_observers <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'observers') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+          scale_fill_manual(values = c("grey75", "#F5B142"))
+  })
+
+  output$battle_report_role_sentries <- renderPlot({
+    battle_report_role_data() %>%
+      filter(statistic == 'sentries') %>%
+      ggplot(aes(x = player, y = value)) +
+      geom_boxplot(
+        aes(fill = player),
+        show.legend = F) +
+      facet_grid(
+        statistic ~ position,
+        scales = "free",
+        switch = "y") +
+      theme_minimal() +
+      theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text.y = element_blank(),
+        strip.text.y.left = element_blank(),
+        strip.background.x = element_rect(
+          fill = "grey25",
+          colour = "white"),
+        strip.text.x = element_text(colour = "white", face = "bold")
+      ) +
+      labs(x = '', y = '') +
+      scale_fill_manual(values = c("grey75", "#A86D0C"))
   })
 
 
 
-# Win rate boxes ----------------------------------------------------------
+# Analysis page table -----------------------------------------------------
+
+  output$battle_report_analysis_data <- DT::renderDataTable({
+    battle_report_data() %>%
+      group_by(position, hero) %>%
+      summarise(
+        Games           = length(match_id),
+        Wins            = sum(win == T),
+        Losses          = sum(win == F),
+        Denies          = round(mean(denies), 2),
+        Kills           = round(mean(kills), 2),
+        Assists         = round(mean(assists), 2),
+        KLA             = round(mean(kla),2),
+        `Net Wealth`    = round(mean(net_wealth), 2),
+        `Last Hits`     = round(mean(last_hits, na.rm = T), 2),
+        `Camps Stacked` = round(mean(camps_stacked, na.rm = T), 2),
+        Observers       = round(mean(observers, na.rm = T), 2),
+        Sentries        = round(mean(sentries, na.rm = T), 2),
+        Healing         = round(mean(healing, na.rm = T), 2)
+      ) %>%
+      mutate(
+        Winrate = round(Wins / (Wins + Losses), 2)
+      )
+  },
+  filter = 'top',
+  options = list(
+    autoWidth = T,
+    scrollX = T
+  ))
+  
+  output$battle_report_analysis_data_gt <- gt::render_gt({
+
+    battle_report_data() %>%
+      group_by(position, hero) %>%
+      summarise(
+        Games           = length(match_id),
+        Wins            = sum(win == T),
+        Losses          = sum(win == F),
+        Denies          = round(mean(denies), 0),
+        Kills           = round(mean(kills), 0),
+        Assists         = round(mean(assists), 0),
+        Deaths          = round(mean(deaths), 0),
+        KLA             = round(mean(kla), 1),
+        `Net Wealth`    = round(mean(net_wealth), 0),
+        `Last Hits`     = round(mean(last_hits, na.rm = T), 0),
+        `Camps Stacked` = round(mean(camps_stacked, na.rm = T), 1),
+        Observers       = round(mean(observers, na.rm = T), 1),
+        Sentries        = round(mean(sentries, na.rm = T), 1),
+        Healing         = round(mean(healing, na.rm = T), 1)
+      ) %>%
+      mutate(
+        Winrate   = round(Wins / (Wins + Losses), 1),
+        Healing   = replace_na(0),
+        Sentries  = replace_na(0),
+        Observers = replace_na(0)
+      ) %>%
+      gt(
+        rowname_col = "hero"
+      ) %>%
+      tab_header(
+        title = "Role analysis",
+        subtitle = "By Hero"
+      ) %>%
+      tab_spanner(
+        label = "Support",
+        columns = c("Observers", "Sentries", "Healing", "Camps Stacked")
+      ) %>%
+      tab_spanner(
+        label = "Main",
+        columns = c("Games", "Wins", "Losses", "Winrate")
+      ) %>%
+      tab_spanner(
+        label = "Kills, Assists, Deaths",
+        columns = c("Kills", "Assists", "Deaths", "KLA")
+      ) %>%
+      tab_spanner(
+        label = "Wealth",
+        columns = c("Last Hits", "Denies", "Net Wealth")
+      )
+  })
+  
+
+# Home page stats ---------------------------------------------------------
+
+# Win rate boxes -----
 
   output$mhWinRateBox <- renderValueBox({
     valueBox(
