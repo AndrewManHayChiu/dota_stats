@@ -5,8 +5,10 @@
 
 secret/*
 temp/*
-rsconnect/
+rsconnect/shinyapps.io/chiumanhay/*
 
 data/matches.rds
 
 *.Rproj
+
+*.dcf

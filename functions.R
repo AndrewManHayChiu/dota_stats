@@ -3,6 +3,7 @@ library(jsonlite)
 library(dplyr)
 library(tidyr)
 library(lubridate)
+library(gt)
 
 # API key stored in non-GIT-tracked folder, 'secret'
 fileName <- 'secret/api_key.txt'
@@ -175,6 +176,68 @@ get_recent_matches_data <- function(player_id, api_key = api_key, limit = 20, lo
 # recent_match_data <- get_recent_matches_data(player_id = 156306162, api_key = api_key, limit = 100)
 # recent_match_data
 
+
+get_match_stats <- function(data) {
+  data.frame(
+    match_id      = data$match_id,
+    player_id     = data$players$account_id,
+    rank_tier     = data$players$rank_tier,
+    hero_id       = data$players$hero_id,
+    is_radiant    = data$players$isRadiant,
+    radiant_win   = data$players$radiant_win,
+    lane_role     = data$players$lane_role,     # use lane to determine core/support using net_wealth
+    net_wealth    = data$players$net_worth,     # use net_wealth to determine core/support for lanes,
+    last_hits     = data$players$last_hits,
+    camps_stacked = data$players$camps_stacked,
+    denies        = data$players$denies,
+    party_id      = data$players$party_id,
+    party_size    = data$players$party_size,
+    observers     = data$players$purchase_ward_observer,
+    sentries      = data$players$purchase_ward_sentry,
+    healing       = data$players$hero_healing,
+    kills         = data$players$kills,
+    deaths        = data$players$deaths,
+    assists       = data$players$assists,
+    patch         = data$patch,
+    duration      = data$duration,
+    region        = data$region
+    # NA if 
+    # smoke         = data$players$item_uses['smoke_of_deceit'],
+  ) %>%
+    left_join(lanes, by = c('lane_role' = 'lane_role')) %>%
+    left_join(heroes[c('id','hero_name', 'localized_name')], by = c('hero_id' = 'id')) %>%
+    left_join(rename(patches, patch = name), by = c('patch' = 'id')) %>%
+    mutate(
+      team = ifelse(is_radiant, 'Radiant', 'Dire'),
+      region = ifelse(region == 5, 'Singapore', ifelse(region == 7, 'Australia', NA)),
+      kla = (kills + assists) / (deaths + 1)
+    ) %>%
+    rowwise() %>%
+    mutate(
+      win = win(team, radiant_win),
+      rank_tier_str = get_rank_tier(rank_tier)
+    ) %>%
+    ungroup() %>%
+    group_by(team, lane) %>%
+    mutate(core = net_wealth == max(net_wealth)) %>%
+    ungroup() %>%
+    left_join(positions, by = c('lane' = 'lane', 'core' = 'core')) %>%
+    select(
+      match_id, player_id, 
+      rank_tier, rank_tier_str, 
+      party_id, party_size, 
+      hero = localized_name, 
+      team, lane, position = position1, 
+      win,
+      kills, assists, deaths, kla,
+      net_wealth, last_hits, camps_stacked, denies, 
+      patch = patch.y, duration, region, 
+      observers, sentries, healing)
+} 
+
+# match_id <- names(matches)[3]
+# match_data_list <- matches[[match_id]]
+# get_match_stats(match_data_list)
 
 # Metrics -----------------------------------------------------------------
 
